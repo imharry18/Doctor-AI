@@ -1,0 +1,7 @@
+node_modules
+.env
+/src/generated/prisma
+
+.env
+dev.db*
+auto_commit.*
