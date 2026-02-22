@@ -2,18 +2,19 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import pdfParse from 'pdf-parse';
 import fs from 'fs';
 import path from 'path';
+import { getServerSession } from "next-auth/next";
+import { authOptions, prisma } from "@/lib/auth";
 
 export const maxDuration = 60; // Set higher max duration for Next.js
 
-// Allow hot-reloading to grab the API key if next.js wasn't restarted
+// Force dynamic parsing of .env at runtime to bypass Next.js caching the old leaked key in memory
 function getApiKey() {
-  if (process.env.GEMINI_API_KEY) return process.env.GEMINI_API_KEY;
   try {
-    const envString = fs.readFileSync(path.join(process.cwd(), '.env.local'), 'utf8');
+    const envString = fs.readFileSync(path.join(process.cwd(), '.env'), 'utf8');
     const match = envString.match(/GEMINI_API_KEY=(.+)/);
-    if (match) return match[1].trim();
+    if (match && match[1].trim()) return match[1].trim();
   } catch (e) {}
-  return "";
+  return process.env.GEMINI_API_KEY || "";
 }
 
 const SYSTEM_INSTRUCTION = `You are Doctor AI, the world's most intelligent medical AI. You are a compassionate, highly capable personal clinical expert. People talking to you might be in pain, stressed, or seeking rapid, expert clinical reassurance.
@@ -31,12 +32,18 @@ export async function POST(req) {
     const apiKey = getApiKey();
     if (!apiKey) throw new Error("GEMINI_API_KEY is not configured.");
     
+    // Database Session Mapping
+    let session = null;
+    try { session = await getServerSession(authOptions); } catch (e) { console.error("Session error:", e); }
+    const userId = session?.user?.id;
+
     const genAI = new GoogleGenerativeAI(apiKey);
 
     const formData = await req.formData();
     const userMessage = formData.get('message');
     const file = formData.get('file');
     const historyString = formData.get('history');
+    let currentChatId = formData.get('chatId');
     
     let history = [];
     if (historyString) {
@@ -45,6 +52,27 @@ export async function POST(req) {
       } catch (e) {
         console.warn("Failed to parse history");
       }
+    }
+
+    // Persist to Database Pre-flight
+    if (userId) {
+      if (!currentChatId || currentChatId === 'null') {
+        const fallbackChat = await prisma.chat.findFirst({ where: { userId }, orderBy: { updatedAt: 'desc' }});
+        if (fallbackChat) currentChatId = fallbackChat.id;
+        else {
+          const newChat = await prisma.chat.create({ data: { userId } });
+          currentChatId = newChat.id;
+        }
+      }
+      // Save User Message
+      await prisma.message.create({
+        data: {
+          chatId: currentChatId,
+          role: 'user',
+          content: userMessage || "Attached Context",
+          fileUrl: file?.name || null
+        }
+      });
     }
 
     let pdfText = "";
@@ -87,7 +115,6 @@ export async function POST(req) {
       systemInstruction: SYSTEM_INSTRUCTION
     });
 
-    // Format history for Gemini & ensure alternating user/model starting with user
     const rawHistory = history.map(msg => ({
       role: msg.role === 'ai' ? 'model' : 'user',
       parts: [{ text: msg.content }]
@@ -96,14 +123,11 @@ export async function POST(req) {
     let formattedHistory = [];
     for (const msg of rawHistory) {
       if (formattedHistory.length === 0) {
-        // history MUST start with user
         if (msg.role === 'user') formattedHistory.push(msg);
       } else {
-        // history MUST alternate
         if (formattedHistory[formattedHistory.length - 1].role !== msg.role) {
           formattedHistory.push(msg);
         } else {
-          // Merge text if same role to maintain alternating structure
           formattedHistory[formattedHistory.length - 1].parts[0].text += "\n" + msg.parts[0].text;
         }
       }
@@ -116,7 +140,27 @@ export async function POST(req) {
     const result = await chat.sendMessage([finalPrompt, ...imageParts]);
     const responseText = result.response.text();
 
-    return new Response(JSON.stringify({ reply: responseText }), {
+    // Persist to Database Post-flight
+    if (userId && currentChatId) {
+      await prisma.message.create({
+        data: {
+          chatId: currentChatId,
+          role: 'ai',
+          content: responseText
+        }
+      });
+      // Optionally update Chat Title based on first message
+      if (history.length <= 1 && userMessage) {
+        try {
+           await prisma.chat.update({
+             where: { id: currentChatId },
+             data: { title: userMessage.substring(0, 30) + '...' }
+           });
+        } catch(e) {}
+      }
+    }
+
+    return new Response(JSON.stringify({ reply: responseText, chatId: currentChatId }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
     });
