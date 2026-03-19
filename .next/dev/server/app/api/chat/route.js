@@ -1,0 +1,10 @@
+var R=require("../../../chunks/[turbopack]_runtime.js")("server/app/api/chat/route.js")
+R.c("server/chunks/feab8_next_537d8670._.js")
+R.c("server/chunks/feab8_next-auth_aa9bf195._.js")
+R.c("server/chunks/feab8_openid-client_8d6b922e._.js")
+R.c("server/chunks/feab8_jose_dist_node_cjs_348baf04._.js")
+R.c("server/chunks/feab8_83c9bdd9._.js")
+R.c("server/chunks/[root-of-the-server]__72d97b91._.js")
+R.c("server/chunks/Desktop_Doctor AI__next-internal_server_app_api_chat_route_actions_f99a8adb.js")
+R.m("[project]/Desktop/Doctor AI/node_modules/next/dist/esm/build/templates/app-route.js { INNER_APP_ROUTE => \"[project]/Desktop/Doctor AI/src/app/api/chat/route.js [app-route] (ecmascript)\" } [app-route] (ecmascript)")
+module.exports=R.m("[project]/Desktop/Doctor AI/node_modules/next/dist/esm/build/templates/app-route.js { INNER_APP_ROUTE => \"[project]/Desktop/Doctor AI/src/app/api/chat/route.js [app-route] (ecmascript)\" } [app-route] (ecmascript)").exports

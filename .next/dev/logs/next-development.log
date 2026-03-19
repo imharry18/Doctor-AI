@@ -1,0 +1,24 @@
+[00:00:01.788] Server  LOG      ✓ Ready in 1114ms
+[00:00:08.157] Server  LOG      ○ Compiling / ...
+[00:00:13.196] Server  WARN    [next-auth][warn][DEBUG_ENABLED] "\nhttps://next-auth.js.org/warnings#debug_enabled"
+[00:00:13.210] Server  ERROR   [next-auth][error][JWT_SESSION_ERROR] "\nhttps://next-auth.js.org/errors#jwt_session_error" "decryption operation failed" {}
+[00:00:16.035] Server  LOG      ○ Compiling /bot ...
+[00:00:16.752] Browser WARN    Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
+[00:00:39.256] Server  ERROR   C:\Users\haris\Desktop\Doctor AI\.next\dev\server\chunks\[root-of-the-server]__72d97b91._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:39.338] Server  ERROR   C:\Users\haris\Desktop\Doctor AI\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:39.353] Server  ERROR   C:\Users\haris\Desktop\Doctor AI\.next\dev\server\chunks\feab8_next_537d8670._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:39.365] Server  ERROR   C:\Users\haris\Desktop\Doctor AI\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:39.371] Server  ERROR   C:\Users\haris\Desktop\Doctor AI\node_modules\next\dist\server\next-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:39.375] Server  ERROR   C:\Users\haris\Desktop\Doctor AI\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:39.377] Server  ERROR   C:\Users\haris\Desktop\Doctor AI\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:39.382] Server  ERROR   C:\Users\haris\Desktop\Doctor AI\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:39.384] Server  ERROR   C:\Users\haris\Desktop\Doctor AI\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:39.387] Server  ERROR   PDF Parsing Error: TypeError: (0 , __TURBOPACK__imported__module__$5b$externals$5d2f$pdf$2d$parse__$5b$external$5d$__$28$pdf$2d$parse$2c$__esm_import$29$__.default) is not a function
+[00:00:39.496] Browser ERROR   {}
+[00:00:46.896] Browser DEBUG   #1 0ms Starting document clone with size 1536x695 scrolled to 0,0
+[00:00:47.810] Browser DEBUG   #1 276ms Document cloned, element located at -9999,-9999 with size 850x1100 using computed rendering
+[00:00:47.810] Browser DEBUG   #1 276ms Starting DOM parsing
+[00:00:47.811] Browser DEBUG   #1 289ms Added image data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224px%22%20height%3D%2224px%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22rou
+[00:00:47.811] Browser DEBUG   #1 314ms Starting renderer for element at -9999,-9999 with size 850x1100
+[00:00:47.811] Browser DEBUG   #1 315ms Canvas renderer initialized (850x1100) with scale 2
+[00:00:47.811] Browser DEBUG   #1 383ms Finished rendering
